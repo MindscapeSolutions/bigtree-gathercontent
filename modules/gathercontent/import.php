@@ -30,7 +30,7 @@ adminRoot = '<?= ADMIN_ROOT ?>';
 $(document).ready(function() {
     $('#submitImport').click(function() {
         if (confirm("Are you sure? This will delete all of the existing pages on this site.")) {
-            window.location = adminRoot + 'gathercontent/process-import/' + $('#project').val();
+            window.location = adminRoot + 'com.mindscapesolutions.gathercontent*gathercontent/process-import/' + $('#project').val();
         }
     });
 });

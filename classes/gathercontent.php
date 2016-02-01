@@ -10,6 +10,9 @@
          *
          */
         public static function import($settingsId, $data) {
+            $data = json_decode($data);
+            $data = $data->data;
+
             $btAdmin = new BigTreeAdmin();
 
             // remove the existing site pages

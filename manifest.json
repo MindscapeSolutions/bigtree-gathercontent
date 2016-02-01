@@ -1,0 +1,217 @@
+{
+    "type": "extension",
+    "id": "com.mindscapesolutions.gathercontent",
+    "version": "0.1",
+    "revision": 1,
+    "compatibility": "4.2+",
+    "title": "GatherContent Importer",
+    "description": "Import content from a GatherContent project.",
+    "keywords": [
+        "import",
+        "GatherContent"
+    ],
+    "author": {
+        "name": "MINDSCAPE Solutions",
+        "url": "http://www.mindscapesolutions.com",
+        "email": "programmers@mindscapesolutions.com"
+    },
+    "licenses": {
+        "MIT": "http://opensource.org/licenses/MIT"
+    },
+    "components": {
+        "module_groups": [
+            {
+                "id": "1",
+                "name": "Utilities",
+                "route": "utilities",
+                "position": "0",
+                "extension": null
+            }
+        ],
+        "modules": [
+            {
+                "id": "1",
+                "group": "1",
+                "name": "GatherContent",
+                "route": "gathercontent",
+                "class": "GatherContent",
+                "icon": "shovel",
+                "gbp": {
+                    "name": "",
+                    "table": "",
+                    "other_table": ""
+                },
+                "position": "0",
+                "extension": null,
+                "actions": [
+                    {
+                        "id": "6",
+                        "module": "1",
+                        "name": "View GatherContent Settings",
+                        "route": "",
+                        "in_nav": "on",
+                        "form": null,
+                        "view": "1",
+                        "report": null,
+                        "class": "list",
+                        "level": "0",
+                        "position": "3"
+                    },
+                    {
+                        "id": "7",
+                        "module": "1",
+                        "name": "Add GatherContent Setting",
+                        "route": "add",
+                        "in_nav": "on",
+                        "form": "3",
+                        "view": null,
+                        "report": null,
+                        "class": "add",
+                        "level": "0",
+                        "position": "2"
+                    },
+                    {
+                        "id": "1",
+                        "module": "1",
+                        "name": "Import",
+                        "route": "import",
+                        "in_nav": "on",
+                        "form": null,
+                        "view": null,
+                        "report": null,
+                        "class": "cone",
+                        "level": "0",
+                        "position": "1"
+                    },
+                    {
+                        "id": "8",
+                        "module": "1",
+                        "name": "Edit GatherContent Setting",
+                        "route": "edit",
+                        "in_nav": "",
+                        "form": "3",
+                        "view": null,
+                        "report": null,
+                        "class": "edit",
+                        "level": "0",
+                        "position": "0"
+                    }
+                ],
+                "views": [
+                    {
+                        "id": "1",
+                        "module": "1",
+                        "title": "GatherContent Settings",
+                        "description": "",
+                        "type": "searchable",
+                        "table": "gcontent",
+                        "fields": {
+                            "account": {
+                                "title": "Account",
+                                "parser": "",
+                                "width": 384,
+                                "numeric": false
+                            },
+                            "project": {
+                                "title": "Project",
+                                "parser": "",
+                                "width": 384,
+                                "numeric": false
+                            }
+                        },
+                        "options": [
+
+                        ],
+                        "actions": {
+                            "edit": "on",
+                            "delete": "on"
+                        },
+                        "preview_url": "",
+                        "related_form": null
+                    }
+                ],
+                "forms": [
+                    {
+                        "id": "3",
+                        "module": "1",
+                        "title": "GatherContent Setting",
+                        "table": "gcontent",
+                        "fields": [
+                            {
+                                "title": "Account",
+                                "subtitle": "",
+                                "type": "text",
+                                "options": {
+                                    "validation": "required",
+                                    "sub_type": ""
+                                },
+                                "column": "account"
+                            },
+                            {
+                                "title": "Project",
+                                "subtitle": "",
+                                "type": "text",
+                                "options": {
+                                    "validation": "required",
+                                    "sub_type": ""
+                                },
+                                "column": "project"
+                            },
+                            {
+                                "title": "Username",
+                                "subtitle": "",
+                                "type": "text",
+                                "options": {
+                                    "validation": "required",
+                                    "sub_type": ""
+                                },
+                                "column": "username"
+                            },
+                            {
+                                "title": "Apikey",
+                                "subtitle": "",
+                                "type": "text",
+                                "options": {
+                                    "validation": "required",
+                                    "sub_type": ""
+                                },
+                                "column": "apikey"
+                            }
+                        ],
+                        "default_position": "",
+                        "return_view": null,
+                        "return_url": "",
+                        "tagging": "",
+                        "hooks": [
+
+                        ]
+                    }
+                ],
+                "embed_forms": [
+
+                ],
+                "reports": [
+
+                ]
+            }
+        ],
+        "templates": [
+
+        ],
+        "callouts": [
+
+        ],
+        "settings": [
+
+        ],
+        "feeds": [
+
+        ],
+        "field_types": [
+
+        ],
+        "tables": {
+            "gcontent": "CREATE TABLE `gcontent` (   `id` int(11) NOT NULL AUTO_INCREMENT,   `username` varchar(128) DEFAULT NULL,   `apikey` varchar(128) DEFAULT NULL,   `account` varchar(128) DEFAULT NULL,   `project` varchar(128) DEFAULT NULL,   PRIMARY KEY (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=latin1"
+        }
+    }
+}

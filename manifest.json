@@ -33,7 +33,7 @@
                 "id": "1",
                 "group": "1",
                 "name": "GatherContent",
-                "route": "gathercontent",
+                "route": "com.mindscapesolutions.gathercontent*gathercontent",
                 "class": "GatherContent",
                 "icon": "shovel",
                 "gbp": {

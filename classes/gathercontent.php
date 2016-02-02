@@ -21,12 +21,12 @@
             // get the settings
             $gContent = new GatherContent();
             $gContent = $gContent->get($settingsId);
-
-            $homeId = -1;
+            $dataMap = $gContent["data_map"];
 
             // gatherContentPageId => bigtreePageId
             $newStructure = array();
 
+            $homeId = -1;
             foreach ($data as $dCounter => $pageData) {
                 if ($pageData->parent_id == 0) {
                     $homeId = $pageData->id;
@@ -62,25 +62,7 @@
                 }
 
                 $btPage["in_nav"] = "on";
-                $btPage["nav_title"] = trim(strip_tags($pageData->name));
-
-                // get the seo info
-                foreach ($contentData->config as $cCounter => $configData) {
-                    if (strtolower($configData->label) == "seo") {
-                        foreach ($configData->elements as $eCounter => $elementData) {
-                            switch (strtolower($elementData->label)) {
-                                case "meta description":
-                                    $btPage["meta_description"] = trim(strip_tags($elementData->value));
-                                    break;
-                                case "page title":
-                                    $btPage["title"] = trim(strip_tags($elementData->value));
-                                    break;
-                            }
-                        }
-                        break; 
-                    }
-                }
-
+                $btPage["meta_description"] = "";
                 $btPage["meta_keywords"] = "";
                 $btPage["seo_invisible"] = "";
                 $btPage["template"] = "content";
@@ -94,12 +76,74 @@
                 $btPage["ga_page_views"] = 0;
                 $btPage["position"] = 0;
 
+
+                foreach ($dataMap as $fieldCounter => $fieldData) {
+                    switch (strtolower($fieldData["bigTreeField"])) {
+                        case "metadescription":
+                            $btPage["meta_description"] = trim(strip_tags(GatherContent::getFieldData($contentData->config, $fieldData["gatherContentTab"], $fieldData["gatherContentField"])));
+                            break;
+                        case "metakeywords":
+                            $btPage["meta_keywords"] = trim(strip_tags(GatherContent::getFieldData($contentData->config, $fieldData["gatherContentTab"], $fieldData["gatherContentField"])));
+                            break;
+                        case "navigationtitle":
+                            $btPage["nav_title"] = trim(strip_tags(GatherContent::getFieldData($contentData->config, $fieldData["gatherContentTab"], $fieldData["gatherContentField"])));
+                            break;
+                        case "pagetitle":
+                            $btPage["title"] = trim(strip_tags(GatherContent::getFieldData($contentData->config, $fieldData["gatherContentTab"], $fieldData["gatherContentField"])));
+                            break;
+                        case "custom":
+                            break;
+                    }
+
+                }
+
+                if (empty($btPage["title"])) {
+                    $btPage["title"] = trim(strip_tags($pageData->name));
+                }
+
+                if (empty($btPage["nav_title"])) {
+                    $btPage["nav_title"] = trim(strip_tags($pageData->name));
+                }
+
                 // create bigtree page
                 $newId = $btAdmin->createPage($btPage);
 
                 // store both page ids in $newStructure
                 if (!empty($newId)) {
                     $newStructure[$pageData->id] = $newId;
+                }
+            }
+        }
+
+        /**
+         * Get the field data from a specified GatherContent tab and field
+         * 
+         * @param array $gcData GatherContent data
+         * @param string $tabName The name of the tab in GatherContent that holds the field
+         * @param string $fieldName The name of the field in GatherContent
+         *
+         * @return string The field's value
+         */
+        public static function getFieldData($gcData, $tabName, $fieldName) {
+
+            // loop through the GatherContent tab names
+            foreach ($gcData as $cCounter => $configData) {
+
+                // if we found the tab
+                if (strtolower($configData->label) == strtolower($tabName)) {
+
+                    // loop through the fields on this tab
+                    if (!empty($configData->elements)) {
+                        foreach ($configData->elements as $eCounter => $elementData) {
+
+                            // if we found the field
+                            if (strtolower($elementData->label) == strtolower($fieldName)) {
+                                return trim(strip_tags($elementData->value));
+                            }
+                        }
+                    }
+
+                    return "";
                 }
             }
         }

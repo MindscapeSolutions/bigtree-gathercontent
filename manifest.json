@@ -1,7 +1,7 @@
 {
     "type": "extension",
     "id": "com.mindscapesolutions.gathercontent",
-    "version": "0.1",
+    "version": "0.2",
     "revision": 2,
     "compatibility": "4.2+",
     "title": "GatherContent Importer",

@@ -76,25 +76,39 @@
                 $btPage["ga_page_views"] = 0;
                 $btPage["position"] = 0;
 
-
+                // store the data fields
+                $hasResources = false;
                 foreach ($dataMap as $fieldCounter => $fieldData) {
                     switch (strtolower($fieldData["bigTreeField"])) {
-                        case "metadescription":
-                            $btPage["meta_description"] = trim(strip_tags(GatherContent::getFieldData($contentData->config, $fieldData["gatherContentTab"], $fieldData["gatherContentField"])));
+                        case "resource":
+                            $hasResources = true;
                             break;
-                        case "metakeywords":
-                            $btPage["meta_keywords"] = trim(strip_tags(GatherContent::getFieldData($contentData->config, $fieldData["gatherContentTab"], $fieldData["gatherContentField"])));
-                            break;
-                        case "navigationtitle":
-                            $btPage["nav_title"] = trim(strip_tags(GatherContent::getFieldData($contentData->config, $fieldData["gatherContentTab"], $fieldData["gatherContentField"])));
-                            break;
-                        case "pagetitle":
-                            $btPage["title"] = trim(strip_tags(GatherContent::getFieldData($contentData->config, $fieldData["gatherContentTab"], $fieldData["gatherContentField"])));
-                            break;
-                        case "custom":
+                        default:
+                            $btPage[$fieldData["bigTreeField"]] = trim(strip_tags(GatherContent::getFieldData($contentData->config, $fieldData["gatherContentTab"], $fieldData["gatherContentField"])));
                             break;
                     }
 
+                }
+
+                // store the page resource fields
+                //
+                // these are stored as a JSON string
+                if ($hasResources) {
+                    $btPage["resources"] = "{";
+
+                    foreach ($dataMap as $fieldCounter => $fieldData) {
+                        switch (strtolower($fieldData["bigTreeField"])) {
+                            case "resource":
+                                // add data to the JSON string in format: "name": "value"
+                                $btPage["resources"] .= "\"" . $fieldData["resourceField"] . "\": \"" . trim(strip_tags(GatherContent::getFieldData($contentData->config, $fieldData["gatherContentTab"], $fieldData["gatherContentField"]))) . "\",";
+                                break;
+                        }
+                    }
+
+                    // remove the last comma
+                    $btPage["resources"] = trim($btPage["resources"], ",");
+
+                    $btPage["resources"] .= "}";
                 }
 
                 if (empty($btPage["title"])) {
